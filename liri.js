@@ -32,23 +32,27 @@ if (operation === "spotify-this-song") {
 
 } else if (operation === 'concert-this') {
 
-    // axios({
-    //     method: 'get',
-    //     url: `https://api.seatgeek.com/2/events?client_id=${keys.seatgeek.id}`
-    // })
-    //     .then(function (response) {
-    //         console.log(response.data.events[0].title);
-    //     })
+    axios({
+        method: 'get',
+        url: `https://api.seatgeek.com/2/events?q=${query_arg}&client_id=${keys.seatgeek.id}`
+    })
+        .then(function (response) {
+            console.log(response.data.events[0].title);
+        })
 } else if (operation === 'movie-this') {
-
-    console.log(keys.omdb.key);
 
     axios({
         method: 'get',
         url: `https://www.omdbapi.com/?t=${query_arg}&apikey=${keys.omdb.key}`
     })
         .then(function (response) {
-            console.log(response.data.Title);
+            console.log('*' + response.data.Title);
+            console.log('*' + response.data.Year);
+            console.log('*' + response.data.imdbRating);
+            console.log('*' + response.data.Ratings[1].Value);
+            console.log('*' + response.data.Country);
+            console.log('*' + response.data.Plot);
+            console.log('*' + response.data.Actors);
         })
 
 };
