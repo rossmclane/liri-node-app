@@ -15,7 +15,16 @@
 3. The command must be run in the downloaded folder. Queries can have spaces and the command must be chosen from one of the above commands
 
 Functioning Application Screenshot
+
 ![First Image](/assets/img/liri-1.png)
+![First Image](/assets/img/liri-2.png)
+![First Image](/assets/img/liri-3.png)
+![First Image](/assets/img/liri-4.5.png)
+![First Image](/assets/img/liri-4.png)
+![First Image](/assets/img/liri-5.5.png)
+![First Image](/assets/img/liri-5.png)
+![First Image](/assets/img/liri-6.png)
+![First Image](/assets/img/liri-7.png)
 
 * Technologies
   * Node
