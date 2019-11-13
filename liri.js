@@ -4,6 +4,7 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var axios = require('axios');
 var fs = require('fs');
+var moment = require('moment');
 
 // Get Arguments
 var operation = process.argv[2];
@@ -30,29 +31,40 @@ function run_liri(operation, query_arg) {
             run_liri(operation, query_arg);
 
         });
+    } else {
+        console.log('That was an invalid operation. Try one of these functions:');
+        console.log('* spotify-this-song');
+        console.log('* movie-this');
+        console.log('* concert-song');
+        console.log('* do-what-it-says');
     }
 }
 
 run_liri(operation, query_arg);
 
 function querySpotify(query_arg) {
+
+    if (query_arg === "") {
+        query_arg = "The Sign Ace of Base";
+    }
+
     var spotify = new Spotify(keys.spotify);
 
     spotify.search({ type: 'track', query: query_arg }, function (err, data) {
         if (err) {
-            return console.log('Error occurred: ' + err);
+            return console.log('No track was found under that name.');
         }
         // Artist
-        console.log(data.tracks.items[0].artists[0].name);
+        console.log(`* Artist(s): ${data.tracks.items[0].artists[0].name}`);
 
         // Song Name
-        console.log(data.tracks.items[0].name);
+        console.log(`* Track: ${data.tracks.items[0].name}`);
 
         // Album Name
-        console.log(data.tracks.items[0].album.name);
+        console.log(`* Album: ${data.tracks.items[0].album.name}`);
 
         // link
-        console.log(data.tracks.items[0].external_urls.spotify);
+        console.log(`* Link: ${data.tracks.items[0].external_urls.spotify}`);
     });
 }
 
@@ -62,12 +74,26 @@ function querySeatgeek(query_arg) {
         url: `https://api.seatgeek.com/2/events?q=${query_arg}&client_id=${keys.seatgeek.id}`
     })
         .then(function (response) {
-            console.log(response.data.events[0].title);
-            // Print this in a prettier format
-            console.log(response.data.events[0].datetime_local);
-            console.log(response.data.events[0].venue.name + response.data.events[0].venue.display_location);
-        })
-}
+
+            if (response.data.events.length === 0) {
+                console.log('No concerts available for this query.');
+            }
+
+            response.data.events.forEach(function (event) {
+                var concertName = event.title;
+                var concertDateTime = event.datetime_local.split('T')[0];
+                var venueName = event.venue.name;
+                var venueLocation = event.venue.display_location;
+
+                var dateTime = new Date(concertDateTime);
+                dateTime = moment(dateTime).format("MM/DD/YYYY");
+
+                console.log(`There is a ${concertName} concert on ${dateTime}.\nIt will be held at ${venueName} in ${venueLocation}.\n`);
+            });
+
+
+        });
+};
 
 function queryOMDB(query_arg) {
     if (query_arg === "") {
@@ -79,17 +105,38 @@ function queryOMDB(query_arg) {
         url: `https://www.omdbapi.com/?t=${query_arg}&apikey=${keys.omdb.key}`
     })
         .then(function (response) {
-            console.log(response.data.Ratings);
-            console.log('*' + response.data.Title);
-            console.log('*' + response.data.Year);
-            console.log('*' + response.data.imdbRating);
-            try {
-                console.log('*' + response.data.Ratings[1].Value);
-            } catch {
-                console.log('*No Rotten Tomatoes Rating');
+
+            // if 
+            // console.log('No movies found in this database');
+            if (response.data.Response === "False") {
+                console.log('No Movie Found!');
+            } else {
+
+                var movieTitle = response.data.Title;
+                var movieYear = response.data.Year;
+                var imdbRating = response.data.imdbRating;
+
+                try {
+                    var rottenRating = response.data.Ratings[1].Value;
+                } catch {
+                    var rottenRating = 'No Rotten Tomatoes Rating';
+                }
+
+                var movieCountry = response.data.Country;
+                var moviePlot = response.data.Plot;
+                var movieActors = response.data.Actors;
+
+                // Album Name
+                console.log(`* Title: ${movieTitle}`);
+                console.log(`* Year: ${movieYear}`);
+                console.log(`* IMDB Rating: ${imdbRating}`);
+                console.log(`* Rotten Tomatoes Rating: ${rottenRating}`);
+                console.log(`* Country: ${movieCountry}`);
+                console.log(`* Plot: ${moviePlot}`);
+                console.log(`* Actors: ${movieActors}`);
+
             }
-            console.log('*' + response.data.Country);
-            console.log('*' + response.data.Plot);
-            console.log('*' + response.data.Actors);
+
         })
+
 }
