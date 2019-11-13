@@ -14,6 +14,8 @@
 2. Commands should be structured `node liri.js {command} {query arguments}`
 3. The command must be run in the downloaded folder. Queries can have spaces and the command must be chosen from one of the above commands
 
+Functioning Application Screenshot
+![First Image](/assets/img/liri-1.png)
 
 * Technologies
   * Node
