@@ -15,7 +15,6 @@
 3. The command must be run in the downloaded folder. Queries can have spaces and the command must be chosen from one of the above commands
 
 Functioning Application Screenshot
-
 ![First Image](/assets/img/liri-1.png)
 ![First Image](/assets/img/liri-2.png)
 ![First Image](/assets/img/liri-3.png)
@@ -27,12 +26,10 @@ Functioning Application Screenshot
 ![First Image](/assets/img/liri-7.png)
 
 * Technologies
-  * Node
-  * Moment
-  * node-spoitfy-api
-  * dotenv
+  * Node - to run backedn JS
+  * Moment - to format dates
+  * Axios - to make api requests
+  * node-spoitfy-api - to make spotify api requests
+  * dotenv - to hide api-keys
 
-Functioning Application Screenshot
-
-
-State your role in the app development
+The only developer on this project was me.
