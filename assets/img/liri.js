@@ -21,8 +21,6 @@ function run_liri(operation, query_arg) {
         queryOMDB(query_arg);
     } else if (operation === 'do-what-it-says') {
 
-        console.log(operation);
-
         fs.readFile('./random.txt', 'utf-8', function (err, data) {
             line = data.replace(/\n|"/g, "").split(',');
             operation = line[0];
